@@ -6,51 +6,51 @@
 
 @layer base {
   :root {
-    --background: 120 10% 6%;
-    --foreground: 120 100% 70%;
+    --background: 0 0% 4%;
+    --foreground: 45 80% 70%;
 
-    --card: 120 10% 9%;
-    --card-foreground: 120 100% 70%;
+    --card: 0 0% 7%;
+    --card-foreground: 45 80% 70%;
 
-    --popover: 120 10% 9%;
-    --popover-foreground: 120 100% 70%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 45 80% 70%;
 
-    --primary: 120 100% 50%;
-    --primary-foreground: 120 10% 6%;
+    --primary: 45 100% 50%;
+    --primary-foreground: 0 0% 4%;
 
-    --secondary: 120 20% 15%;
-    --secondary-foreground: 120 100% 70%;
+    --secondary: 270 40% 15%;
+    --secondary-foreground: 45 80% 70%;
 
-    --muted: 120 10% 14%;
-    --muted-foreground: 120 40% 45%;
+    --muted: 270 20% 12%;
+    --muted-foreground: 45 30% 45%;
 
-    --accent: 45 100% 55%;
-    --accent-foreground: 120 10% 6%;
+    --accent: 270 70% 55%;
+    --accent-foreground: 45 100% 90%;
 
     --destructive: 0 80% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 120 40% 20%;
-    --input: 120 40% 20%;
-    --ring: 120 100% 50%;
+    --border: 270 30% 20%;
+    --input: 270 30% 20%;
+    --ring: 45 100% 50%;
 
     --radius: 0.25rem;
 
-    --glow-primary: 0 0 20px hsl(120 100% 50% / 0.4);
-    --glow-accent: 0 0 20px hsl(45 100% 55% / 0.4);
-    --scanline-opacity: 0.04;
+    --glow-primary: 0 0 20px hsl(45 100% 50% / 0.4);
+    --glow-accent: 0 0 20px hsl(270 70% 55% / 0.5);
+    --scanline-opacity: 0.03;
 
     --font-mono: 'Space Mono', monospace;
     --font-pixel: 'Press Start 2P', monospace;
 
-    --sidebar-background: 120 10% 8%;
-    --sidebar-foreground: 120 100% 70%;
-    --sidebar-primary: 120 100% 50%;
-    --sidebar-primary-foreground: 120 10% 6%;
-    --sidebar-accent: 120 20% 15%;
-    --sidebar-accent-foreground: 120 100% 70%;
-    --sidebar-border: 120 40% 20%;
-    --sidebar-ring: 120 100% 50%;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 45 80% 70%;
+    --sidebar-primary: 45 100% 50%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 270 40% 15%;
+    --sidebar-accent-foreground: 45 80% 70%;
+    --sidebar-border: 270 30% 20%;
+    --sidebar-ring: 45 100% 50%;
   }
 }
 
@@ -58,73 +58,52 @@
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-mono);
   }
-
   h1, h2, h3 {
     font-family: var(--font-pixel);
   }
 }
 
-/* CRT Scanline overlay */
 .crt-scanlines::after {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   pointer-events: none;
   z-index: 50;
   background: repeating-linear-gradient(
     0deg,
     transparent,
     transparent 2px,
-    hsl(120 100% 50% / var(--scanline-opacity)) 2px,
-    hsl(120 100% 50% / var(--scanline-opacity)) 4px
+    hsl(270 70% 55% / var(--scanline-opacity)) 2px,
+    hsl(270 70% 55% / var(--scanline-opacity)) 4px
   );
 }
 
-/* CRT flicker */
 @keyframes crt-flicker {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.98; }
 }
+.crt-flicker { animation: crt-flicker 0.1s infinite; }
 
-.crt-flicker {
-  animation: crt-flicker 0.1s infinite;
-}
+.glow-text { text-shadow: var(--glow-primary); }
+.glow-accent { text-shadow: var(--glow-accent); }
 
-/* Glow text */
-.glow-text {
-  text-shadow: var(--glow-primary);
-}
-
-.glow-accent {
-  text-shadow: var(--glow-accent);
-}
-
-/* Blink cursor */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
-
 .cursor-blink::after {
   content: '█';
   animation: blink 1s step-end infinite;
   color: hsl(var(--primary));
 }
 
-/* Robot eye screen shimmer */
 @keyframes screen-shimmer {
   0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }
 }
-
-.screen-shimmer {
-  animation: screen-shimmer 2s ease-in-out infinite;
-}
+.screen-shimmer { animation: screen-shimmer 2s ease-in-out infinite; }
