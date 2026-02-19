@@ -35,11 +35,23 @@ const Index = () => {
         </p>
       </div>
 
+      <div className="max-w-2xl mx-auto text-center mb-6 px-4">
+        <p className="text-[10px] md:text-xs font-mono text-muted-foreground leading-relaxed">
+          {'>'} Welcome to the UWaterloo Mechatronics Engineering webring! This is an ongoing project and was inspired by CS/SE webrings.
+        </p>
+        <p className="text-[10px] md:text-xs font-mono text-muted-foreground/80 mt-2 leading-relaxed">
+          To join, open a PR
+          {/* add a link here */}
+        </p>
+      </div>
+
+      <div className="w-full max-w-2xl border-t border-border/30 mb-6"></div>
+
       <p className="font-mono text-xs text-muted-foreground mb-6 cursor-blink">
         {'>'} now visiting: {current.name}
       </p>
 
-      <RetroRobot memberName={current.name} memberYear={current.program || ""} />
+      <RetroRobot memberName={current.name} memberYear={current.program || current.grad_year?.toString() || ""} />
 
       <a
         href={current.url}
@@ -64,7 +76,7 @@ const Index = () => {
 
       <footer className="mt-12 text-center font-mono text-xs text-muted-foreground">
         <p>University of Waterloo · Mechatronics Engineering</p>
-        <p className="mt-1 text-[10px] opacity-60">a webring for MTE students · est. 2025</p>
+        <p className="mt-1 text-[10px] opacity-60">a webring for MTE students · est. 2026</p>
       </footer>
     </div>
   );

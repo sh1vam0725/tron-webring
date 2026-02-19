@@ -16,22 +16,21 @@ const MemberList = ({ members, currentIndex, onSelectMember }: MemberListProps) 
         <div className="grid grid-cols-[2rem_1fr_1fr_auto] gap-2 px-3 py-2 border-b border-border text-muted-foreground text-xs font-mono">
           <span>#</span>
           <span>NAME</span>
-          <span>PROGRAM</span>
+          <span>YEAR</span>
           <span>LINK</span>
         </div>
         {members.map((member, i) => (
           <button
             key={member.name}
             onClick={() => onSelectMember(i)}
-            className={`w-full grid grid-cols-[2rem_1fr_1fr_auto] gap-2 px-3 py-2 text-xs md:text-sm font-mono text-left transition-colors hover:bg-secondary ${
-              i === currentIndex
+            className={`w-full grid grid-cols-[2rem_1fr_1fr_auto] gap-2 px-3 py-2 text-xs md:text-sm font-mono text-left transition-colors hover:bg-secondary ${i === currentIndex
                 ? "bg-secondary text-primary glow-text"
                 : "text-foreground"
-            } ${i < members.length - 1 ? "border-b border-border/50" : ""}`}
+              } ${i < members.length - 1 ? "border-b border-border/50" : ""}`}
           >
             <span className="text-muted-foreground">{String(i).padStart(2, '0')}</span>
             <span>{member.name}</span>
-            <span className="text-muted-foreground">{member.program}</span>
+            <span className="text-muted-foreground">{member.program || member.grad_year || '-'}</span>
             <a
               href={member.url}
               target="_blank"

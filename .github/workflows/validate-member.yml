@@ -1,0 +1,66 @@
+name: Validate Member PR
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'members.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate Members Data
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Make validation script executable
+        run: chmod +x scripts/validate-members.js
+
+      - name: Run validation
+        run: node scripts/validate-members.js
+
+      - name: Check for single member addition
+          run: |
+          git fetch origin main
+          CHANGED_LINES=$(git diff origin/main HEAD -- members.json | grep -E '^\+.*"name"' | wc -l)
+          echo "Number of new members: $CHANGED_LINES"
+          if [ "$CHANGED_LINES" -gt 1 ]; then
+            echo "❌ Error: Please add only ONE member per PR"
+            exit 1
+          elif [ "$CHANGED_LINES" -eq 0 ]; then
+            echo "⚠️  Warning: No new members detected in this PR"
+          else
+            echo "✅ Single member addition detected"
+          fi
+
+      - name: Comment on PR
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ **Validation Passed!**\n\nYour member data looks good! A maintainer will review and merge your PR soon.\n\nThank you for joining the webring! 🎉'
+            })
+
+      - name: Comment on PR failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **Validation Failed**\n\nPlease check the validation errors above and update your PR accordingly.\n\nMake sure to:\n- Add only ONE member per PR\n- Include required fields: name and url\n- Use valid URL format (starting with http:// or https://)\n- Follow the template in CONTRIBUTING.md\n\nIf you need help, feel free to ask in the PR comments!'
+            })
