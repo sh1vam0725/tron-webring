@@ -8,5 +8,15 @@
         "name": "Panth Patel",
         "grad_year": 2029,
         "url": "https://panthpatel.ca"
+    },
+    {
+        "name": "Nihar Sheth",
+        "grad_year": 2029,
+        "url": "https://nihar-sheth.github.io"
+    },
+    {
+        "name": "Om Upadhyay",
+        "grad_year": 2029,
+        "url": "http://omupadhyay.com"
     }
 ]

@@ -10,7 +10,7 @@ A webring is a collection of websites. Navigate through portfolios, personal sit
 
 ## Join the Webring
 
-- Current MTE students or alumni at the University of Waterloo
+Open to all current MTE students or alumni at the University of Waterloo in Waterloo, Ontario, Canada 
 
 ### How to Add Your Site
 
@@ -54,7 +54,7 @@ Inspired by the UWaterloo CS and SE webrings:
 - [SE Webring](https://se-webring.xyz/)
 - [CS Webring](https://cs.uwatering.com/)
 
-Built with [Lovable](https://lovable.dev/) • Contributions welcome, open a PR or add an Issue to the GitHub
+Built with the help of [Lovable](https://lovable.dev/) • Contributions welcome, open a PR or add an Issue to the GitHub
 
 ---
 

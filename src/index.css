@@ -37,7 +37,7 @@
     --radius: 0.25rem;
 
     --glow-primary: 0 0 20px hsl(45 100% 50% / 0.4);
-    --glow-accent: 0 0 20px hsl(270 70% 55% / 0.5);
+    --glow-accent: 0 0 20px hsl(270 70% 55% / 0.5); 
     --scanline-opacity: 0.03;
 
     --font-mono: 'Space Mono', monospace;

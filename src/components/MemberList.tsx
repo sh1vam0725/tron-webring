@@ -2,47 +2,52 @@ import { Member } from "@/data/members";
 
 interface MemberListProps {
   members: Member[];
-  currentIndex: number;
-  onSelectMember: (index: number) => void;
+  showResultCount?: boolean;
+  totalCount?: number;
+  onSelectMember?: (member: Member) => void;
 }
 
-const MemberList = ({ members, currentIndex, onSelectMember }: MemberListProps) => {
+const MemberList = ({ members, showResultCount, totalCount, onSelectMember }: MemberListProps) => {
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <h2 className="text-xs md:text-sm font-pixel text-center mb-6 glow-text tracking-widest">
-        :: MEMBERS ::
-      </h2>
-      <div className="border border-border rounded bg-card p-1">
-        <div className="grid grid-cols-[2rem_1fr_1fr_auto] gap-2 px-3 py-2 border-b border-border text-muted-foreground text-xs font-mono">
-          <span>#</span>
-          <span>NAME</span>
-          <span>YEAR</span>
-          <span>LINK</span>
-        </div>
-        {members.map((member, i) => (
-          <button
-            key={member.name}
-            onClick={() => onSelectMember(i)}
-            className={`w-full grid grid-cols-[2rem_1fr_1fr_auto] gap-2 px-3 py-2 text-xs md:text-sm font-mono text-left transition-colors hover:bg-secondary ${i === currentIndex
-                ? "bg-secondary text-primary glow-text"
-                : "text-foreground"
-              } ${i < members.length - 1 ? "border-b border-border/50" : ""}`}
-          >
-            <span className="text-muted-foreground">{String(i).padStart(2, '0')}</span>
-            <span>{member.name}</span>
-            <span className="text-muted-foreground">{member.program || member.grad_year || '-'}</span>
-            <a
-              href={member.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="text-accent hover:text-primary underline underline-offset-2 transition-colors"
-            >
-              →
-            </a>
-          </button>
-        ))}
+      <div className="flex items-center justify-center gap-3 mb-6">
+        {showResultCount && (
+          <span className="text-[6px] font-pixel text-muted-foreground tracking-wider">
+            ({members.length} of {totalCount})
+          </span>
+        )}
       </div>
+      {members.length === 0 ? (
+        <div className="text-center py-12 text-muted-foreground font-pixel text-[6px] tracking-wider">
+          NO MEMBERS FOUND
+        </div>
+      ) : (
+        <div className="space-y-1">
+          {/* Header Row */}
+          <div className="grid grid-cols-[2fr_auto_2fr] gap-4 px-3 py-2 text-[6px] font-pixel text-muted-foreground tracking-wider">
+            <span>NAME</span>
+            <span>YEAR</span>
+            <span className="ml-8">URL</span>
+          </div>
+          {members.map((member) => (
+            <div
+              key={member.name}
+              className="grid grid-cols-[2fr_auto_2fr] gap-4 px-3 py-2 text-[6px] md:text-[8px] font-pixel transition-colors hover:bg-secondary/50 text-foreground tracking-wider"
+            >
+              <span className="truncate">{member.name}</span>
+              <span className="text-muted-foreground whitespace-nowrap">{member.program || member.grad_year || '-'}</span>
+              <a
+                href={member.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:text-primary underline underline-offset-2 transition-colors truncate ml-8 hover:glow-text"
+              >
+                {member.url}
+              </a>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
