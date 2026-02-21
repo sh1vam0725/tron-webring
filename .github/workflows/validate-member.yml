@@ -15,6 +15,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for non-members.json changes
+        run: |
+          git fetch origin main
+          OTHER_FILES=$(git diff origin/main HEAD --name-only | grep -v '^members\.json$' | wc -l)
+          if [ "$OTHER_FILES" -gt 0 ]; then
+            echo "❌ Error: This PR modifies files other than members.json."
+            echo "Non-member contributions require manual review by the maintainer — no automation allowed."
+            exit 1
+          fi
+          echo "✅ Only members.json was changed"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -27,19 +40,22 @@ jobs:
       - name: Run validation
         run: node scripts/validate-members.js
 
-      - name: Check for single member addition
+      - name: Check for single member addition (exactly 3 field lines)
         run: |
           git fetch origin main
-          CHANGED_LINES=$(git diff origin/main HEAD -- members.json | grep -E '^\+.*"name"' | wc -l)
-          echo "Number of new members: $CHANGED_LINES"
-          if [ "$CHANGED_LINES" -gt 1 ]; then
-            echo "❌ Error: Please add only ONE member per PR"
+          DIFF_FIELDS=$(git diff origin/main HEAD -- members.json | grep -E '^\+[[:space:]]+"[^"]+":')
+          ADDED_FIELDS=$(echo "$DIFF_FIELDS" | grep -c '.' || true)
+          echo "Number of new field lines: $ADDED_FIELDS"
+          if [ "$ADDED_FIELDS" -ne 3 ]; then
+            echo "❌ Error: Exactly 3 lines must be added to members.json (name, grad_year, url). Found: $ADDED_FIELDS"
             exit 1
-          elif [ "$CHANGED_LINES" -eq 0 ]; then
-            echo "⚠️  Warning: No new members detected in this PR"
-          else
-            echo "✅ Single member addition detected"
           fi
+          UNEXPECTED_FIELDS=$(echo "$DIFF_FIELDS" | grep -cvE '^\+[[:space:]]+"(name|grad_year|url)":' || true)
+          if [ "$UNEXPECTED_FIELDS" -gt 0 ]; then
+            echo "❌ Error: Only the fields name, grad_year, and url are allowed in a member entry"
+            exit 1
+          fi
+          echo "✅ Exactly 3 required field lines detected (name, grad_year, url)"
 
       - name: Comment on PR
         if: success()
@@ -62,5 +78,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '❌ **Validation Failed**\n\nPlease check the validation errors above and update your PR accordingly.\n\nMake sure to:\n- Add only ONE member per PR\n- Include required fields: name and url\n- Use valid URL format (starting with http:// or https://)\n- Follow the template in CONTRIBUTING.md\n\nIf you need help, feel free to ask in the PR comments!'
+              body: '❌ **Validation Failed**\n\nPlease check the validation errors above and update your PR accordingly.\n\nMake sure to:\n- Only modify `members.json` (other file changes require manual review)\n- Add exactly ONE member with exactly 3 fields: `name`, `grad_year`, `url`\n- Use a valid URL format (starting with http:// or https://)\n- Use a `grad_year` of 2003 or later\n\nIf you need help, feel free to ask in the PR comments!'
             })
