@@ -94,7 +94,7 @@ const RetroRobot = ({ searchValue, onSearchChange, onRandom, memberName, memberY
           title="Random Member"
         >
           <img
-            src="/shuffle.png"
+            src={`${import.meta.env.BASE_URL}shuffle.png`}
             alt="Shuffle"
             className="w-5 h-5"
           />
