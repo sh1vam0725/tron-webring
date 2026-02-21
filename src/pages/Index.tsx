@@ -167,7 +167,7 @@ const Index = () => {
 
         <div className="flex items-center justify-center gap-3 mb-3">
           <img
-            src={`${import.meta.env.BASE_URL}uwaterloo seal.svg`}
+            src={`${import.meta.env.BASE_URL}uwaterloo-seal.svg`}
             alt="University of Waterloo Seal"
             className="w-12 h-12 md:w-16 md:h-16 opacity-70"
           />

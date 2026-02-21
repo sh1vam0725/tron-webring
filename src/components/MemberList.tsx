@@ -9,7 +9,7 @@ interface MemberListProps {
 
 const MemberList = ({ members }: MemberListProps) => {
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-3xl mx-auto px-4 ml-48">
       <div className="space-y-2">
         <div className="grid grid-cols-[0.8fr_0.6fr_2.6fr] md:grid-cols-[1fr_1fr_2fr] gap-2 md:gap-4 px-3 py-2 text-muted-foreground text-xs font-mono">
           <span>NAME</span>
