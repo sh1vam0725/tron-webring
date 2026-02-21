@@ -16,7 +16,7 @@ const MEMBERS_FILE = join(__dirname, '..', 'members.json');
 
 // Validation rules
 const CURRENT_YEAR = new Date().getFullYear();
-const MIN_YEAR = CURRENT_YEAR - 6;
+const MIN_GRAD_YEAR = 2003;
 const MAX_YEAR = CURRENT_YEAR + 6;
 const URL_REGEX = /^https?:\/\/.+\..+/;
 
@@ -59,8 +59,10 @@ function validateMember(member, index) {
         error(`${memberPrefix}: Missing required 'grad_year' field`);
     } else if (typeof member.grad_year !== 'number' || !Number.isInteger(member.grad_year)) {
         error(`${memberPrefix}: 'grad_year' must be an integer year`);
-    } else if (member.grad_year < MIN_YEAR || member.grad_year > MAX_YEAR) {
-        warn(`${memberPrefix}: 'grad_year' looks unusual. Expected between ${MIN_YEAR} and ${MAX_YEAR}`);
+    } else if (member.grad_year < MIN_GRAD_YEAR) {
+        error(`${memberPrefix}: 'grad_year' cannot be before ${MIN_GRAD_YEAR}`);
+    } else if (member.grad_year > MAX_YEAR) {
+        warn(`${memberPrefix}: 'grad_year' looks unusual. Expected no later than ${MAX_YEAR}`);
     }
 
     // Check for extra fields
