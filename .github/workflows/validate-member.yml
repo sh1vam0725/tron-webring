@@ -43,13 +43,14 @@ jobs:
       - name: Check for single member addition (exactly 3 field lines)
         run: |
           git fetch origin main
-          ADDED_FIELDS=$(git diff origin/main HEAD -- members.json | grep -cE '^\+[[:space:]]+"[^"]+":' || true)
+          DIFF_FIELDS=$(git diff origin/main HEAD -- members.json | grep -E '^\+[[:space:]]+"[^"]+":')
+          ADDED_FIELDS=$(echo "$DIFF_FIELDS" | grep -c '.' || true)
           echo "Number of new field lines: $ADDED_FIELDS"
           if [ "$ADDED_FIELDS" -ne 3 ]; then
             echo "❌ Error: Exactly 3 lines must be added to members.json (name, grad_year, url). Found: $ADDED_FIELDS"
             exit 1
           fi
-          UNEXPECTED_FIELDS=$(git diff origin/main HEAD -- members.json | grep -E '^\+[[:space:]]+"[^"]+":' | grep -cvE '^\+[[:space:]]+"(name|grad_year|url)":' || true)
+          UNEXPECTED_FIELDS=$(echo "$DIFF_FIELDS" | grep -cvE '^\+[[:space:]]+"(name|grad_year|url)":' || true)
           if [ "$UNEXPECTED_FIELDS" -gt 0 ]; then
             echo "❌ Error: Only the fields name, grad_year, and url are allowed in a member entry"
             exit 1

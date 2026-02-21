@@ -16,6 +16,7 @@ const MEMBERS_FILE = join(__dirname, '..', 'members.json');
 
 // Validation rules
 const CURRENT_YEAR = new Date().getFullYear();
+// 2003 is the earliest plausible graduation year accepted by this webring
 const MIN_GRAD_YEAR = 2003;
 const MAX_YEAR = CURRENT_YEAR + 6;
 const URL_REGEX = /^https?:\/\/.+\..+/;
